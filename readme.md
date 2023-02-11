@@ -1,1 +1,1 @@
-﻿# Transitive Dependencies Kata
+﻿# Transitive Dependency Resolver  
