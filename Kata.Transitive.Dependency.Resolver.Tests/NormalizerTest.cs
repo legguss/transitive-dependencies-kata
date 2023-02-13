@@ -14,7 +14,7 @@ public class NormalizerTest
    [Test, TestCaseSource(nameof(Cases))]
    public void NormalizeTest(TestCase testCase)
    {
-      var output = testCase.Input.NormalizeDependencies()
+      var output = testCase.Input.NormalizeInput()
          .Select(
             item => new[] { item.Key }.Concat(item.Value)
          ).ToArray();

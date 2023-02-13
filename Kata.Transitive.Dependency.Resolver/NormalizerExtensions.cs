@@ -5,32 +5,45 @@
 /// </summary>
 public static class NormalizerExtensions
 {
-   internal static string[] NormalizeNode(
-      this ( string dependant, IEnumerable<string[]> dempendecies) source
+   internal static string[] GetNormalizedDependencies(
+      this IEnumerable<string[]> dependencies, string dependant
    )
    {
-      return source.dempendecies.SelectMany(node => node)
-         .Where(dependency => source.dependant != dependency)
+      return dependencies.SelectMany(node => node)
+         .Where(dependency => dependant != dependency)
          .Distinct()
          .ToArray();
    }
 
-   internal static Dictionary<string, string[]> NormalizeDependencies(
-      this string[][] dependencies
+   internal static bool IsDependOn(this string dependant, string dependency)
+   {
+      return dependency is not "" && dependency != dependant;
+   }
+
+   internal static bool IsNodeWithDependencies(this string[] node)
+   {
+      return node.Length > 1
+             && node.Any(
+                dependency =>
+                   node.First().IsDependOn(dependency)
+             );
+   }
+
+   /// <summary>
+   /// Returns a dictionary of normalized node dependencies.
+   /// Removes empty nodes, nodes with only one element, and nodes with self-dependencies.
+   /// Deduplicates the dependencies.
+   /// </summary> 
+   internal static Dictionary<string, string[]> NormalizeInput(
+      this string[][] input
    )
    {
-      return dependencies
-         .Where(node => node.Length > 1)
+      return input
+         .Where(node => node.IsNodeWithDependencies())
          .GroupBy(node => node.First())
-         .Select(
-            group =>
-               (Dependant: group.Key, Dependencies: (group.Key, group)
-                  .NormalizeNode())
-         )
-         .Where(item => item.Dependencies.Any())
          .ToDictionary(
-            item => item.Dependant,
-            item => item.Dependencies
+            nodes => nodes.Key,
+            nodes => nodes.GetNormalizedDependencies(nodes.Key)
          );
    }
 }

@@ -10,7 +10,7 @@ internal static class HelperExtensions
    /// </summary>
    /// <param name="node"></param>
    /// <returns></returns>
-   internal static string[] AsStringArray(this DependencyNode node)
+   internal static string[] AsStringArray(this NodeDependencies node)
    {
       return new[] { node.Dependant }
          .Concat(node.Dependencies.Keys
@@ -19,11 +19,26 @@ internal static class HelperExtensions
          .ToArray();
    }
 
-   internal static string[][] FinalizeResults(this DependencyResolverContext context)
+   internal static string[][] FinalizeResults(this Dictionary<string, NodeDependencies> context)
    {
-      return context.Output
+      return context
          .OrderBy(node => node.Key)
          .Select(node => node.Value.AsStringArray())
          .ToArray();
+   }
+
+   internal static Dictionary<string, NodeDependencies> CreateResolverContext(this Dictionary<string, string[]> normalizedInput)
+   {
+      return normalizedInput
+         .Select(
+            node => new NodeDependencies(
+               node.Key,
+               node.Value
+            )
+         )
+         .ToDictionary(
+            node => node.Dependant,
+            node => node
+         );
    }
 }
