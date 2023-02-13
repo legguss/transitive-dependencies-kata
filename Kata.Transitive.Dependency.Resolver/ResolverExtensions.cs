@@ -24,6 +24,7 @@ public static class DependencyResolverExtensions
       while (true)
       {
          var allResolved = dependantNodes.Values
+            .Where(dependantNode => dependantNode.IsResolved is false)
             .All(dependantNode =>
                dependantNode.TryResolveTransitiveDependencies(dependantNodes)
             );
@@ -36,18 +37,17 @@ public static class DependencyResolverExtensions
    }
 
    /// <summary>
-   /// Lets  
+   /// Lets try to resolve the transitive dependencies for the dependant node.
    /// </summary>
    internal static bool TryResolveTransitiveDependencies(
       this NodeDependencies dependantNode, Dictionary<string, NodeDependencies> dependantNodes
    )
    {
-      return dependantNode.IsResolved
-             || dependantNode.Dependencies.Keys
-                .ToList()
-                .All(dependency =>
-                   dependantNode.AddNewTransientDependencies(dependency, dependantNodes) is false
-                );
+      return dependantNode.Dependencies.Keys
+         .ToList()
+         .All(dependency =>
+            dependantNode.AddNewTransientDependencies(dependency, dependantNodes) is false
+         );
    }
 
    /// <summary>

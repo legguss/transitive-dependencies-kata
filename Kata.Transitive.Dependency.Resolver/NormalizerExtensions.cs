@@ -1,7 +1,7 @@
 ﻿namespace Kata.Transitive.Dependency.Resolver;
 
 /// <summary>
-/// Methods to normalize and sanitize the input data
+/// Methods to normalize and sanitize the denormalizedInput data
 /// </summary>
 public static class NormalizerExtensions
 {
@@ -35,10 +35,10 @@ public static class NormalizerExtensions
    /// Deduplicates the dependencies.
    /// </summary> 
    internal static Dictionary<string, string[]> NormalizeInput(
-      this string[][] input
+      this string[][] denormalizedInput
    )
    {
-      return input
+      return denormalizedInput
          .Where(node => node.IsNodeWithDependencies())
          .GroupBy(node => node.First())
          .ToDictionary(
