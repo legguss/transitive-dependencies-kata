@@ -1,4 +1,4 @@
-using static Kata.Transitive.Dependency.Resolver.Tests.TestCaseCatalogue;
+using static Kata.Transitive.Dependency.Resolver.Tests.ResolverTestCaseCatalogue;
 
 namespace Kata.Transitive.Dependency.Resolver.Tests;
 
@@ -18,13 +18,16 @@ public class ResolverTest
       DifferentLengthCyclicCase,
       RandomCase,
       DenormalizedSingleCase,
-      SwingerCycleCase
+      SwingerCycleCase,
+      SingleEntryCase,
+      DenormalizedCase
+      
    };
 
    [Test, TestCaseSource(nameof(Cases))]
    public void Resolve(TestCase testCase)
    {
       var output = testCase.Input.ResolveDependencies();
-      Assert.That(output, Is.EqualTo(testCase.Output));
+      Assert.That(output, Is.EqualTo(testCase.Expected));
    }
 }

@@ -1,4 +1,4 @@
-using static Kata.Transitive.Dependency.Resolver.Tests.TestCaseCatalogue;
+using static Kata.Transitive.Dependency.Resolver.Tests.NormalizerTestCaseCatalogue;
 
 namespace Kata.Transitive.Dependency.Resolver.Tests;
 
@@ -8,7 +8,9 @@ public class NormalizerTest
    {
       DenormalizedDuplicatedEntryCase,
       DenormalizedSingleCase,
-      EmptyCase
+      EmptyCase,
+      SingleEntryCase,
+      DenormalizedCase
    };
 
    [Test, TestCaseSource(nameof(Cases))]
@@ -19,6 +21,6 @@ public class NormalizerTest
             item => new[] { item.Key }.Concat(item.Value)
          ).ToArray();
 
-      Assert.That(output, Is.EqualTo(testCase.Output));
+      Assert.That(output, Is.EqualTo(testCase.Expected));
    }
 }

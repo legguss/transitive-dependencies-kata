@@ -7,16 +7,16 @@ public record TestCase
       Input = input
          .Select(item => item.Select(c => c.ToString()).ToArray())
          .ToArray();
-      Output = output
+      Expected = output
          .Select(item => item.Select(c => c.ToString()).ToArray())
          .ToArray();
    }
 
    public string[][] Input { get; }
-   public string[][] Output { get; }
+   public string[][] Expected { get; }
 };
 
-public static class TestCaseCatalogue
+public static class ResolverTestCaseCatalogue
 {
    public static readonly TestCase OriginalCase = new(
       new[] { "ABC", "BCE", "CG", "DAF", "EF", "FH" },
@@ -28,6 +28,16 @@ public static class TestCaseCatalogue
       new[] { "ABC" }
    );
 
+   public static readonly TestCase DenormalizedCase = new(
+      new[] { "ABC", "ABC", "ACB", "AGHM", "AA", "GX", "GXX" },
+      new[] { "ABCGHMX", "GX" }
+   );
+
+   public static readonly TestCase EmptyCase = new(
+      new[] { "A", "B", "" },
+      Array.Empty<string>()
+   );
+
    public static readonly TestCase SingleEntryCase = new(
       new[] { "ABC" },
       new[] { "ABC" }
@@ -36,11 +46,6 @@ public static class TestCaseCatalogue
    public static readonly TestCase SimpleCase = new(
       new[] { "ABC", "BD" },
       new[] { "ABCD", "BD" }
-   );
-
-   public static readonly TestCase EmptyCase = new(
-      new[] { "A", "B" },
-      Array.Empty<string>()
    );
 
    public static readonly TestCase DifferentLengthCyclicCase = new(
@@ -56,11 +61,6 @@ public static class TestCaseCatalogue
    public static readonly TestCase DenormalizedSingleCase = new(
       new[] { "ABC", "ABC", "ACB", "AGHM", "AA" },
       new[] { "ABCGHM" }
-   );
-   
-   public static readonly TestCase DenormalizedCase = new(
-      new[] { "ABC", "ABC", "ACB", "AGHM", "AA", "GX", "GXX" },
-      new[] { "ABCGHM", "GX" }
    );
 
    public static readonly TestCase SwingerCycleCase = new(
