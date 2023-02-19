@@ -17,7 +17,7 @@
    </ItemGroup>
 
    <ItemGroup>
-     <ProjectReference Include="..\Kata.Transitive.Dependency.Resolver.csproj" />
+      <ProjectReference Include="..\Kata.Transitive.Dependency.Resolver\Kata.Transitive.Dependency.Resolver.csproj" />
    </ItemGroup>
 
 </Project>

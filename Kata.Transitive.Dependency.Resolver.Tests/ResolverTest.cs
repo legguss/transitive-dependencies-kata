@@ -1,16 +1,33 @@
+using static Kata.Transitive.Dependency.Resolver.Tests.ResolverTestCaseCatalogue;
+
 namespace Kata.Transitive.Dependency.Resolver.Tests;
 
-public class Tests
+public class ResolverTest
 {
    [SetUp]
    public void Setup()
    {
-      
    }
 
-   [Test]
-   public void Test1()
+   private static readonly TestCase[] Cases =
    {
-      Assert.Pass();
+      OriginalCase,
+      DenormalizedDuplicatedEntryCase,
+      SimpleCase,
+      EmptyCase,
+      DifferentLengthCyclicCase,
+      RandomCase,
+      DenormalizedSingleCase,
+      SwingerCycleCase,
+      SingleEntryCase,
+      DenormalizedCase
+      
+   };
+
+   [Test, TestCaseSource(nameof(Cases))]
+   public void Resolve(TestCase testCase)
+   {
+      var output = testCase.Input.ResolveDependencies();
+      Assert.That(output, Is.EqualTo(testCase.Expected));
    }
 }
